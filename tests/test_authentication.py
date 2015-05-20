@@ -2,7 +2,6 @@ from datetime import timedelta
 
 import pytest
 
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 
@@ -10,13 +9,15 @@ from rest_framework import status
 
 from timed_auth_token.models import TimedAuthToken
 
+from users.models import CustomUser
+
 
 pytestmark = pytest.mark.django_db
 
 
 @pytest.fixture
 def token():
-    user = User.objects.create(username='test', password='test', email='test@tset.com')
+    user = CustomUser.objects.create(identifier='test', password='test')
     return TimedAuthToken.objects.create(user=user)
 
 

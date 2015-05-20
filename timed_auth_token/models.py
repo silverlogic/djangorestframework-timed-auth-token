@@ -1,19 +1,12 @@
 import os
 import base64
 
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 
 from .settings import token_settings
-
-
-class TimedAuthTokenManager(models.Manager):
-    def filter_for_user(self, user):
-        '''A queryset with all of the auth tokens for the `user`.'''
-        queryset = self.get_queryset()
-        return queryset.filter(object_id=user.id, content_type=ContentType.objects.get_for_model(user))
 
 
 class TimedAuthToken(models.Model):
@@ -32,15 +25,12 @@ class TimedAuthToken(models.Model):
         token = TimedAuthToken(user=MyUser())
 
     '''
-    objects = TimedAuthTokenManager()
     key = models.CharField(max_length=40, primary_key=True)
     created = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(auto_now=True)
     expires = models.DateTimeField(blank=True)
 
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
-    user = GenericForeignKey('content_type', 'object_id')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     def __unicode__(self):
         return u'%s.%s:%i, created %s, expires %s' % (
@@ -57,7 +47,7 @@ class TimedAuthToken(models.Model):
         super(TimedAuthToken, self).save(*args, **kwargs)
 
     def calculate_new_expiration(self):
-        validity_duration = getattr(self.content_type.model_class(), 'token_validity_duration',
+        validity_duration = getattr(get_user_model(), 'token_validity_duration',
                                     token_settings.DEFAULT_VALIDITY_DURATION)
         self.expires = timezone.now() + validity_duration
 

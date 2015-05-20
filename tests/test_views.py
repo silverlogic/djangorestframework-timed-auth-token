@@ -2,7 +2,6 @@ import json
 
 import pytest
 
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 from rest_framework import status
@@ -15,12 +14,9 @@ from users.models import CustomUser
 pytestmark = pytest.mark.django_db
 
 
-# User model path, User model, Username field
-@pytest.fixture(params=[('auth.User', User, 'username'),
-                        ('users.CustomUser', CustomUser, 'identifier')])
-def data(request, settings):
-    settings.AUTH_USER_MODEL = request.param[0]
-    user = request.param[1](**{request.param[2]: 'test'})
+@pytest.fixture
+def data():
+    user = CustomUser(identifier='test')
     user.set_password('test')
     user.save()
     return {'username': 'test', 'password': 'test'}

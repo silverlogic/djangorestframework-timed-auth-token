@@ -8,7 +8,7 @@ def read(filename):
 
 setup(
     name='djangorestframework-timed-auth-token',
-    version='0.1.0',
+    version='0.2.0',
     description=('An authentication token for djangorestframework that has an expiration date.'),
     long_description=read('README.rst'),
     author='Ryan Pineo',

@@ -32,9 +32,9 @@ class TimedAuthToken(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
-    def __unicode__(self):
-        return u'%s.%s:%i, created %s, expires %s' % (
-            self.content_type.app_label, self.content_type.name, self.object_id, self.created, self.expires
+    def __str__(self):
+        return 'Token for %s, created %s, expires %s' % (
+            self.user.get_username(), self.created, self.expires
         )
 
     def save(self, *args, **kwargs):

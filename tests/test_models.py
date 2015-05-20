@@ -39,3 +39,7 @@ def test_calculate_new_expiration_can_be_overridden_on_model(token, settings):
     expected = timezone.now().date() + timedelta(days=10)
     actual = token.expires.date()
     assert expected == actual
+
+
+def test_str_representation_has_username_field(token):
+    assert 'blah' in str(token)

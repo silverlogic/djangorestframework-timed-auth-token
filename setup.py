@@ -14,7 +14,7 @@ setup(
     author='Ryan Pineo',
     author_email='ryanpineo@gmail.com',
     license='MIT',
-    url='https://github.com/RyanPineo/djangorestframework-timed-auth-token',
+    url='https://github.com/silverlogic/djangorestframework-timed-auth-token',
     packages=['timed_auth_token'],
     install_requires=['djangorestframework>=3.1'],
     classifiers=[

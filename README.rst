@@ -79,3 +79,8 @@ take precedence.
         TIMED_AUTH_TOKEN = {
             'DEFAULT_VALIDITY_DURATION': timedelta(days=45)
         }
+
+
+Credits
+=======
+Starting code (model, auth backend) thanks to Jake from `jh.gg <https://jh.gg/>`_.

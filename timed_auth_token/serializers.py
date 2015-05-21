@@ -16,7 +16,8 @@ class TimedAuthTokenCreateSerializer(serializers.Serializer):
             User = get_user_model()
             self.user = User.objects.get(**{User.USERNAME_FIELD: username})
         except ObjectDoesNotExist:
-            raise serializers.ValidationError(_('That username does not exist.'))
+            msg = _('That {} does not exist.'.format(User.USERNAME_FIELD))
+            raise serializers.ValidationError(msg)
 
     def validate(self, data):
         password = data['password']

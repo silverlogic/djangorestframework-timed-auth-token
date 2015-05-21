@@ -40,7 +40,7 @@ def test_cant_login_with_non_existant_username(data, client):
     data['username'] = 'nobody'
     response = client.post(reverse('auth:login'), data)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert 'That username does not exist.' in response.content.decode('utf-8')
+    assert 'That identifier does not exist.' in response.content.decode('utf-8')
 
 
 def test_cant_login_with_wrong_password(data, client):

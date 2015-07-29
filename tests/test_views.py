@@ -48,3 +48,13 @@ def test_cant_login_with_wrong_password(data, client):
     response = client.post(reverse('auth:login'), data)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert 'Incorrect password.' in response.content.decode('utf-8')
+
+
+def test_cant_login_if_user_is_inactive(client):
+    user = CustomUser(identifier='inactive_user', is_active=False)
+    user.set_password('test')
+    user.save()
+
+    response = client.post(reverse('auth:login'), {'username': 'inactive_user', 'password': 'test'})
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+    assert 'inactive or deleted' in response.content.decode('utf-8')

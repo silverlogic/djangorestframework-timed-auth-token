@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 
-from rest_framework import serializers
+from rest_framework import serializers, exceptions
 
 from .models import TimedAuthToken
 
@@ -23,6 +23,10 @@ class TimedAuthTokenCreateSerializer(serializers.Serializer):
         password = data['password']
         if not self.user.check_password(password):
             raise serializers.ValidationError(_('Incorrect password.'))
+
+        if not self.user.is_active:
+            raise exceptions.AuthenticationFailed(_('User inactive or deleted.'))
+
         return data
 
     def create(self, validated_data):

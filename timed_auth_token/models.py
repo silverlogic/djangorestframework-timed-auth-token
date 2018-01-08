@@ -30,7 +30,7 @@ class TimedAuthToken(models.Model):
     last_used = models.DateTimeField(auto_now=True)
     expires = models.DateTimeField(blank=True)
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return 'Token for %s, created %s, expires %s' % (
